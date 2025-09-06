@@ -1,0 +1,50 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum AuthProviders {
+  GOOGLE
+  GITHUB
+}
+
+
+model User {
+  id String @unique @default(uuid())
+  name String
+  email String @unique
+  provider AuthProviders @default(GOOGLE)
+  avatar String?
+  refreshToken String?
+  credits Int @default(5)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  generatedImages GeneratedImage[]
+}
+
+model InputImage {
+  id String @unique @default(uuid())
+  imageUrl String
+  generatedImages GeneratedImage[]
+}
+
+model GeneratedImage {
+  id String @unique @default(uuid())
+  image String
+  inputImageId String
+  inputImage InputImage @relation(references: [id], fields: [inputImageId]) 
+  userId String
+  user User @relation(references: [id], fields: [userId])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
