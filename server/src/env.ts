@@ -15,6 +15,11 @@ function parseEnv(env: NodeJS.ProcessEnv) {
     GOOGLE_CLIENT_SECRET: z.string(),
     GOOGLE_REDIRECT_URI: z.url(),
     CLIENT_URL: z.url(),
+    CLOUDINARY_CLOUD_NAME: z.string(),
+    CLOUDINARY_API_KEY: z.string(),
+    CLOUDINARY_API_SECRET: z.string(),
+    GEMINI_API_KEY: z.string(),
+    GROQ_API_KEY: z.string(),
   });
 
   const parsed = schema.safeParse(env);

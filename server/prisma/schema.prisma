@@ -30,12 +30,16 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   generatedImages GeneratedImage[]
+  inputImages InputImage[]
 }
 
 model InputImage {
   id String @unique @default(uuid())
   imageUrl String
+  userId String
+  user User @relation(references: [id],fields: [userId])
   generatedImages GeneratedImage[]
+  instructions Json
 }
 
 model GeneratedImage {
@@ -45,6 +49,11 @@ model GeneratedImage {
   inputImage InputImage @relation(references: [id], fields: [inputImageId]) 
   userId String
   user User @relation(references: [id], fields: [userId])
+  isChildImage Boolean @default(false)
+  parentImage GeneratedImage? @relation(name: "images",references: [id],fields: [parentImageId])
+  parentImageId String? 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  childImages GeneratedImage[] @relation(name: "images")
+  followUpRequirement String?
 }

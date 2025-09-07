@@ -24,11 +24,13 @@
     "typescript": "^5"
   },
   "dependencies": {
+    "@google/genai": "^1.17.0",
     "@prisma/client": "^6.15.0",
     "cloudinary": "^2.7.0",
     "cors": "^2.8.5",
     "dotenv": "^17.2.2",
     "express": "^5.1.0",
+    "groq-sdk": "^0.32.0",
     "jsonwebtoken": "^9.0.2",
     "multer": "^2.0.2",
     "passport": "^0.7.0",
