@@ -6,13 +6,16 @@ const ParseHashAfterLogin = ({ children }: { children: React.ReactNode }) => {
   const navigate = useNavigate();
   const [] = useState();
   useEffect(() => {
-    const tokens = parseHash();
+    if (window.location.hash) {
+      const tokens = parseHash();
 
-    if (tokens && tokens["access-token"] && tokens["refresh-token"]) {
-      localStorage.setItem("access-token", tokens["access-token"]);
-      localStorage.setItem("refresh-token", tokens["refresh-token"]);
+      if (tokens && tokens["access-token"] && tokens["refresh-token"]) {
+        localStorage.setItem("access-token", tokens["access-token"]);
+        localStorage.setItem("refresh-token", tokens["refresh-token"]);
+      } else {
+        navigate("/");
+      }
     }
-    navigate("/");
   }, [window.location.hash]);
   return children;
 };

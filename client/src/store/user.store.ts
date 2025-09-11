@@ -1,4 +1,4 @@
-import { createStore } from "zustand";
+import { create } from "zustand";
 
 interface UserStoreType {
   user?: {
@@ -14,7 +14,7 @@ interface UserStoreType {
   getUser: () => Promise<void>;
 }
 
-const useUser = createStore<UserStoreType>((set) => ({
+const useUser = create<UserStoreType>((set) => ({
   isLoading: false,
   user: null,
 
