@@ -22,7 +22,7 @@ router.get(
 router.get(
   "/google/callback",
   passport.authenticate("google", {
-    failureRedirect: `${env.CLIENT_URL}/authenticate`,
+    failureRedirect: `${env.CLIENT_URL}`,
     session: false,
   }),
   authenticate

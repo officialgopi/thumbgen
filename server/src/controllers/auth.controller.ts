@@ -9,12 +9,13 @@ import {
 import { AsyncHandler } from "../utils/async-handler.util";
 import { ApiError, ApiResponse } from "../utils/response-handler.util";
 import { db } from "../db";
+import { env } from "../env";
 
 const authenticate = AsyncHandler(async (req, res) => {
   const { data, success } = authenticateSchemaName.safeParse(req.user);
 
   if (!success) {
-    throw new ApiError(401, "Invalid Account");
+    throw new ApiError(401, "Soemthing went wrong");
   }
 
   const tokens = await generateTokenAndSaveToDB(data.id);
@@ -24,14 +25,16 @@ const authenticate = AsyncHandler(async (req, res) => {
   }
 
   res.setHeader("Authorization", tokens.accessToken);
-
-  new ApiResponse(
-    200,
-    {
-      "refresh-token": tokens.refreshToken,
-    },
-    `Welcome back ${data.name}`
-  ).send(res);
+  res.redirect(
+    `${env.CLIENT_URL}/#access-token=${tokens.accessToken}&refresh-token=${tokens.refreshToken}`
+  );
+  // new ApiResponse(
+  //   200,
+  //   {
+  //     "refresh-token": tokens.refreshToken,
+  //   },
+  //   `Welcome back ${data.name}`
+  // ).send(res);
 });
 
 const getMe = AsyncHandler(async (req, res) => {

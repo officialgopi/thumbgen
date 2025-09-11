@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { env } from "@/constants/env.constant";
 
 function Nav() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -19,9 +20,12 @@ function Nav() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const handleLogin = () => {
+  const handleLogin = (method: string) => {
     setShowAuthModal(false);
-    navigate("/authenticate");
+
+    if (method === "google") {
+      window.location.href = env.server + "/api/v1/auth/google";
+    }
   };
 
   const navLinks = [
@@ -34,11 +38,15 @@ function Nav() {
   return (
     <>
       <motion.nav
-        className={`fixed top-4 left-4 right-4 z-50 transition-all duration-700 ease-out ${
-          scrolled ? "max-w-4xl mx-auto" : "max-w-full mx-0"
+        className={`fixed top-4 left-4 right-4 z-50 origin-center transition-all duration-700 ease-out mx-auto ${
+          scrolled ? "max-w-5xl" : "max-w-full "
         }`}
-        initial={{ y: -100 }}
-        animate={{ y: 0 }}
+        initial={{
+          y: -100,
+        }}
+        animate={{
+          y: 0,
+        }}
         transition={{ duration: 0.8, ease: "easeOut" }}
       >
         <motion.div
@@ -54,7 +62,7 @@ function Nav() {
               {/* Brand */}
               <motion.div
                 className="flex items-center space-x-3"
-                whileHover={{ scale: 1.02 }}
+                whileHover={{ scale: 1.0 }}
                 transition={{ duration: 0.2 }}
               >
                 <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center">
@@ -73,7 +81,7 @@ function Nav() {
                   </svg>
                 </div>
                 <span className="text-lg font-semibold text-white">
-                  ThumbnailAI
+                  ThumbGen
                 </span>
               </motion.div>
 
@@ -105,7 +113,7 @@ function Nav() {
                 </Button>
                 <Button
                   onClick={() => setShowAuthModal(true)}
-                  className="bg-white text-neutral-950 hover:bg-neutral-200 px-4 py-2 h-auto rounded-lg font-medium transition-all duration-300"
+                  className="bg-white text-neutral-950 hover:bg-neutral-200  px-4 py-2 h-auto rounded-lg font-medium transition-all duration-300"
                 >
                   Get Started
                 </Button>
@@ -223,21 +231,21 @@ function Nav() {
 
               <div className="space-y-3">
                 <Button
-                  onClick={handleLogin}
+                  onClick={() => handleLogin("google")}
                   className="w-full bg-white text-neutral-950 hover:bg-neutral-200 py-3 rounded-lg font-medium transition-colors"
                 >
                   Continue with Google
                 </Button>
-                <Button
+                {/* <Button
                   onClick={handleLogin}
                   variant="outline"
                   className="w-full border-neutral-700 bg-transparent text-neutral-300 hover:bg-neutral-800/50 hover:text-white py-3 rounded-lg font-medium transition-colors"
                 >
                   Continue with GitHub
-                </Button>
+                </Button> */}
               </div>
 
-              <div className="flex items-center my-6">
+              {/* <div className="flex items-center my-6">
                 <div className="flex-1 h-px bg-neutral-800"></div>
                 <span className="px-3 text-xs text-neutral-500">OR</span>
                 <div className="flex-1 h-px bg-neutral-800"></div>
@@ -249,7 +257,7 @@ function Nav() {
                 className="w-full border-neutral-700 bg-transparent text-neutral-300 hover:bg-neutral-800/50 hover:text-white py-3 rounded-lg font-medium transition-colors"
               >
                 Continue with Email
-              </Button>
+              </Button> */}
 
               <p className="text-center text-xs text-neutral-500 mt-6">
                 By continuing, you agree to our Terms of Service and Privacy

@@ -17,7 +17,7 @@ function initPassport() {
         async (_accessToken, _refreshToken, profile, done) => {
           try {
             if (!profile) {
-              return done(new Error("Google Profile not found"));
+              return done(null);
             }
 
             const name = profile.displayName;
@@ -25,7 +25,7 @@ function initPassport() {
             const avatar = profile.photos?.[0]?.value;
 
             if (!email) {
-              return done(new Error("Somthing went wrong"));
+              return done(null);
             }
 
             let user = await db.user.findUnique({
@@ -45,7 +45,7 @@ function initPassport() {
             }
 
             if (!user) {
-              return done(new Error("Something went wrong"));
+              return done(null);
             }
 
             return done(null, {
