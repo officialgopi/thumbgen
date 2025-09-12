@@ -37,6 +37,7 @@ const generateImage = AsyncHandler(async (req, res) => {
     generatePhotoBodySchema.safeParse(req.body?.data);
 
   if (!isSuccessOnBodyParsing) {
+    fs.unlinkSync(file.path);
     throw new ApiError(400, "Invalid Body");
   }
 
@@ -45,8 +46,8 @@ const generateImage = AsyncHandler(async (req, res) => {
   const promptToGenerateImage = await generatePromptForImageGeneration(
     user_prompt
   );
-
   if (!promptToGenerateImage) {
+    fs.unlinkSync(file.path);
     throw new ApiError(400, "Failed to generate prompt");
   }
 
@@ -60,6 +61,7 @@ const generateImage = AsyncHandler(async (req, res) => {
   );
 
   if (!base64Image) {
+    fs.unlinkSync(file.path);
     throw new ApiError(400, "Failed to generate image");
   }
 

@@ -4,8 +4,11 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { env } from "@/constants/env.constant";
+import { useUser } from "@/store/user.store";
 
 function Nav() {
+  const { user } = useUser();
+
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -104,15 +107,23 @@ function Nav() {
 
               {/* CTA Button */}
               <div className="hidden md:flex items-center space-x-4">
-                <Button
-                  onClick={() => setShowAuthModal(true)}
+                {/* <Button
+                  onClick={() => {
+                    setShowAuthModal(true);
+                  }}
                   variant="ghost"
                   className="text-neutral-400 hover:text-white hover:bg-transparent px-4 py-2 h-auto font-medium transition-colors"
                 >
                   Sign in
-                </Button>
+                </Button> */}
                 <Button
-                  onClick={() => setShowAuthModal(true)}
+                  onClick={() => {
+                    if (user) {
+                      navigate("/main");
+                    } else {
+                      setShowAuthModal(true);
+                    }
+                  }}
                   className="bg-white text-neutral-950 hover:bg-neutral-200  px-4 py-2 h-auto rounded-lg font-medium transition-all duration-300"
                 >
                   Get Started
@@ -175,7 +186,7 @@ function Nav() {
                   ))}
 
                   <div className="pt-4 space-y-2">
-                    <Button
+                    {/* <Button
                       onClick={() => {
                         setIsMenuOpen(false);
                         setShowAuthModal(true);
@@ -184,11 +195,15 @@ function Nav() {
                       className="w-full justify-start text-neutral-400 hover:text-white hover:bg-neutral-800/50 px-4 py-2 h-auto rounded-lg font-medium"
                     >
                       Sign in
-                    </Button>
+                    </Button> */}
                     <Button
                       onClick={() => {
-                        setIsMenuOpen(false);
-                        setShowAuthModal(true);
+                        if (user) {
+                          navigate("/main");
+                        } else {
+                          setIsMenuOpen(false);
+                          setShowAuthModal(true);
+                        }
                       }}
                       className="w-full bg-white text-neutral-950 hover:bg-neutral-200 px-4 py-2 h-auto rounded-lg font-medium"
                     >

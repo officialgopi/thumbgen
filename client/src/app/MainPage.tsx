@@ -51,7 +51,7 @@ interface GenerateFormData {
 }
 
 const MainPage = () => {
-  const { user, getUser } = useUser();
+  const { user } = useUser();
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
@@ -83,10 +83,6 @@ const MainPage = () => {
       downloadQuality: "medium",
     },
   });
-
-  React.useEffect(() => {
-    getUser();
-  }, [getUser]);
 
   const handleFileUpload = (file: File) => {
     setUploadedFile(file);
@@ -130,7 +126,7 @@ const MainPage = () => {
     setIsGenerating(true);
     try {
       const formDataToSend = new FormData();
-      formDataToSend.append("file", uploadedFile);
+      formDataToSend.append("thumbnail-context", uploadedFile);
       formDataToSend.append("data", JSON.stringify(formData));
 
       const response = await fetch(`${env.server}/api/v1/generate`, {
@@ -269,21 +265,20 @@ const MainPage = () => {
     { value: "high", label: "High", description: "Best quality" },
   ];
 
-  if (!user) {
-    return (
-      <div className="min-h-screen bg-neutral-950 flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-2xl font-bold text-white mb-4">
-            Please sign in to continue
-          </h1>
-          <Button onClick={() => (window.location.href = "/")}>
-            Go to Landing Page
-          </Button>
-        </div>
-      </div>
-    );
-  }
-
+  // if (!user) {
+  //   return (
+  //     <div className="min-h-screen bg-neutral-950 flex items-center justify-center">
+  //       <div className="text-center">
+  //         <h1 className="text-2xl font-bold text-white mb-4">
+  //           Please sign in to continue
+  //         </h1>
+  //         <Button onClick={() => (window.location.href = "/")}>
+  //           Go to Landing Page
+  //         </Button>
+  //       </div>
+  //     </div>
+  //   );
+  // }
   return (
     <div className="min-h-screen bg-gradient-to-br from-neutral-50 to-neutral-100">
       {/* Header */}
@@ -312,16 +307,16 @@ const MainPage = () => {
             </div>
             <div className="flex items-center space-x-4">
               <Badge variant="outline" className="text-neutral-600">
-                Credits: {user.credits}
+                Credits: {user?.credits ?? 0}
               </Badge>
               <div className="flex items-center space-x-2">
                 <img
-                  src={user.avatar}
-                  alt={user.name}
+                  src={user?.avatar}
+                  alt={user?.name}
                   className="w-8 h-8 rounded-full"
                 />
                 <span className="text-sm font-medium text-neutral-700">
-                  {user.name}
+                  {user?.name}
                 </span>
               </div>
             </div>
@@ -406,6 +401,29 @@ const MainPage = () => {
             </Card>
 
             {/* Text Content */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Main Prompt</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-neutral-700 mb-2">
+                    Prompt
+                  </label>
+                  <textarea
+                    value={formData.prompt}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        prompt: e.target.value,
+                      })
+                    }
+                    placeholder="Enter your main title"
+                    className="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-neutral-500 focus:border-transparent"
+                  />
+                </div>
+              </CardContent>
+            </Card>
             <Card>
               <CardHeader>
                 <CardTitle>Text Content</CardTitle>

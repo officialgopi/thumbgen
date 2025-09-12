@@ -1,3 +1,4 @@
+import { env } from "@/constants/env.constant";
 import { create } from "zustand";
 
 interface UserStoreType {
@@ -15,18 +16,18 @@ interface UserStoreType {
 }
 
 const useUser = create<UserStoreType>((set) => ({
-  isLoading: false,
+  isLoading: true,
   user: null,
 
   getUser: async () => {
-    if (!localStorage.getItem("access-token")) {
-      return;
-    }
     set({
       isLoading: true,
     });
     try {
-      const res = await fetch("/api/v1/auth/me", {
+      if (!localStorage.getItem("access-token")) {
+        return;
+      }
+      const res = await fetch(env.server + "/api/v1/auth/me", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -35,10 +36,9 @@ const useUser = create<UserStoreType>((set) => ({
       });
 
       const user = await res.json();
-
       if (user.success) {
         set({
-          user: user.data,
+          user: user.data.user,
         });
       }
     } catch (error) {

@@ -31,6 +31,9 @@ const generateImageViaPrompt = async (
   format: string = "png"
 ) => {
   try {
+    if (uploadedFormat === "jpg") {
+      uploadedFormat = "jpeg";
+    }
     const base64 = buffer.toString("base64");
     const response = await gemini.models.generateContent({
       model: "gemini-2.5-flash-image-preview",
@@ -64,6 +67,7 @@ const generateImageViaPrompt = async (
     }
     return null;
   } catch (error) {
+    console.log(error);
     return null;
   }
 };
