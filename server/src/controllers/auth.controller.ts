@@ -15,19 +15,20 @@ const authenticate = AsyncHandler(async (req, res) => {
   const { data, success } = authenticateSchemaName.safeParse(req.user);
 
   if (!success) {
-    throw new ApiError(401, "Soemthing went wrong");
+    return res.redirect(`${env.CLIENT_URL}`);
+    // throw new ApiError(401, "Soemthing went wrong");
   }
 
   const tokens = await generateTokenAndSaveToDB(data.id);
 
   if (!tokens) {
-    throw new ApiError(400, "Cannot login right Now");
+    return res.redirect(`${env.CLIENT_URL}`);
   }
 
-  res.setHeader("Authorization", tokens.accessToken);
-  res.redirect(
+  return res.redirect(
     `${env.CLIENT_URL}/#access-token=${tokens.accessToken}&refresh-token=${tokens.refreshToken}`
   );
+  // res.setHeader("Authorization", tokens.accessToken);
   // new ApiResponse(
   //   200,
   //   {
