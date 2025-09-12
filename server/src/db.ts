@@ -5,7 +5,7 @@ import { env } from "./env";
 const prisma = globalThis.db ?? new PrismaClient();
 
 // if (env.NODE_ENV !== "production") {
-//   globalThis.db = prisma;
 // }
+globalThis.db = prisma;
 
 export const db = prisma;
