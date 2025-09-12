@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "concurrently \"tsc  -w -p .\"  \"nodemon dist/index.js\"",
-    "build": "tsc -b",
+    "build": "tsc -b && prisma generate && prisma migrate deploy",
     "start": "bun dist/index.js"
   },
   "devDependencies": {
