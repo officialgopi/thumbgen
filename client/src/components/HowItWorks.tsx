@@ -1,5 +1,4 @@
 // components/HowItWorks.jsx
-import React from "react";
 import { motion, type Variants } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
 

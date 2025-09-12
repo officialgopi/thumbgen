@@ -114,7 +114,7 @@ const MainPage = () => {
     setFormData((prev: GenerateFormData) => ({
       ...prev,
       [section]: {
-        ...prev[section],
+        ...(prev[section] as any),
         [field]: value,
       },
     }));
